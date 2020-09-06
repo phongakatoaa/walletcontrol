@@ -29,14 +29,14 @@ public class UserService {
     }
 
     public User findUserByUsername(String username) {
-        return userRepository.findByUserName(username);
+        return userRepository.findByUsername(username);
     }
 
     public User saveUser(User user) {
         user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
         user.setActive(true);
         Role userRole = roleRepository.findByRole("USER");
-        user.setRoles(new HashSet<Role>(Collections.singletonList(userRole)));
+        user.setRoles(new HashSet<>(Collections.singletonList(userRole)));
         return userRepository.save(user);
     }
 }

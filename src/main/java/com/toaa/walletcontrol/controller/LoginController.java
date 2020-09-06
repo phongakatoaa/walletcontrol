@@ -38,11 +38,11 @@ public class LoginController {
     @RequestMapping(value = "/registration", method = RequestMethod.POST)
     public ModelAndView createNewUser(@Valid User user, BindingResult bindingResult) {
         ModelAndView modelAndView = new ModelAndView();
-        User userExists = userService.findUserByUsername(user.getUserName());
+        User userExists = userService.findUserByUsername(user.getUsername());
         if (userExists != null) {
             bindingResult
-                    .rejectValue("userName", "error.user",
-                            "There is already a user registered with the user name provided");
+                    .rejectValue("username", "error.user",
+                            "There is already a user registered with the username provided");
         }
         if (!bindingResult.hasErrors()) {
             userService.saveUser(user);
@@ -58,7 +58,7 @@ public class LoginController {
         ModelAndView modelAndView = new ModelAndView();
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         User user = userService.findUserByUsername(auth.getName());
-        modelAndView.addObject("username", "Welcome " + user.getUserName() + "/" + user.getFirstName() + " " + user.getLastName() + " (" + user.getEmail() + ")");
+        modelAndView.addObject("username", "Welcome " + user.getUsername() + "/" + user.getFirstName() + " " + user.getLastName() + " (" + user.getEmail() + ")");
         modelAndView.setViewName("home");
         return modelAndView;
     }
