@@ -1,5 +1,6 @@
 package com.toaa.walletcontrol.model.wallet;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.toaa.walletcontrol.model.login.User;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -19,12 +20,14 @@ public class Payment {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "payment_id")
-    private int id;
+    private long id;
 
+    @JsonBackReference
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
+    @JsonBackReference
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "product_id", nullable = false)
     private Product product;

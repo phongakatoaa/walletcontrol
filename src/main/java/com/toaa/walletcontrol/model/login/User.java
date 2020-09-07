@@ -1,5 +1,6 @@
 package com.toaa.walletcontrol.model.login;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.toaa.walletcontrol.model.wallet.Category;
 import com.toaa.walletcontrol.model.wallet.Payment;
 import com.toaa.walletcontrol.model.wallet.Product;
@@ -25,10 +26,10 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "user_id")
-    private int id;
+    private long id;
 
     @Column(name = "username")
-    @Length(min = 5, message = "*Your user name must have at least 5 characters")
+    @Length(min = 3, message = "*Your user name must have at least 3 characters")
     @NotEmpty(message = "*Please provide a user name")
     private String username;
 
@@ -60,12 +61,15 @@ public class User {
     @JoinTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Role> roles;
 
+    @JsonManagedReference
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<Payment> payments;
 
+    @JsonManagedReference
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<Product> products;
 
+    @JsonManagedReference
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<Category> categories;
 }

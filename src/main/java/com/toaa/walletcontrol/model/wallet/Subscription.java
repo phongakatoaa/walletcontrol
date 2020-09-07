@@ -21,7 +21,7 @@ public class Subscription {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "subscription_id")
-    private int id;
+    private long id;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "product_id", nullable = false)
