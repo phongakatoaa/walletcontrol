@@ -36,4 +36,9 @@ public class PaymentService {
         LocalDate endDateTime = LocalDate.parse(endDate, formatter);
         return paymentRepository.findAllByDateBetween(startDateTime, endDateTime);
     }
+
+    public long getByYear(int year) {
+
+        return paymentRepository.getSum();
+    }
 }
