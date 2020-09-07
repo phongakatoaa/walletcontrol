@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.util.List;
+
 @Controller
 @RequestMapping(value = "/payment")
 public class PaymentController {
@@ -25,5 +27,13 @@ public class PaymentController {
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     public Payment getPayment(@PathVariable long id) {
         return paymentService.getById(id);
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/time-range", method = RequestMethod.GET)
+    public List<Payment> getByTimeRange(String startDate, String endDate) {
+        System.out.println(startDate);
+        System.out.println(endDate);
+        return paymentService.getByTimeRange(startDate, endDate);
     }
 }

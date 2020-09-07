@@ -9,7 +9,6 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
 import java.util.Set;
 
 @Data
@@ -26,7 +25,7 @@ public class Category {
     private long id;
 
     @Column(name = "category_name")
-    @NotNull(message = "*Please provide category name")
+    @NotEmpty(message = "*Please provide category name")
     private String name;
 
     @Column(name = "color_code")
@@ -36,7 +35,4 @@ public class Category {
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
-
-    @OneToMany(mappedBy = "category", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private Set<Product> products;
 }

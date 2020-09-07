@@ -8,7 +8,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
+import javax.validation.constraints.NotEmpty;
+import java.time.LocalDate;
 
 @Data
 @Builder
@@ -27,17 +28,16 @@ public class Payment {
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
-    @JsonBackReference
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "product_id", nullable = false)
-    private Product product;
+    @Column(name = "product")
+    @NotEmpty(message = "*Please provide a product name")
+    private String product;
 
     @Column(name = "payment_detail")
     private String detail;
 
     @Column(name = "date")
-    private LocalDateTime date;
+    private LocalDate date;
 
     @Column(name = "price")
-    private Long price;
+    private Long cost;
 }

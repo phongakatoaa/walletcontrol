@@ -3,7 +3,6 @@ package com.toaa.walletcontrol.model.login;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.toaa.walletcontrol.model.wallet.Category;
 import com.toaa.walletcontrol.model.wallet.Payment;
-import com.toaa.walletcontrol.model.wallet.Product;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -55,7 +54,7 @@ public class User {
     private Boolean active;
 
     @Column(name = "spending_limit")
-    private int spendingLimit;
+    private long spendingLimit;
 
     @ManyToMany(cascade = CascadeType.MERGE)
     @JoinTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
@@ -64,10 +63,6 @@ public class User {
     @JsonManagedReference
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<Payment> payments;
-
-    @JsonManagedReference
-    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private Set<Product> products;
 
     @JsonManagedReference
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
