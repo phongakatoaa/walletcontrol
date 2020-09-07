@@ -24,7 +24,7 @@ public class WCCommandLineRunner implements CommandLineRunner {
             if (role == null) {
                 logger.error("Role " + roleName + " does not exists! Creating a new one...");
                 role = new Role();
-                role.setRole("USER");
+                role.setRole(roleName);
                 roleRepository.save(role);
                 logger.info("Role " + roleName + " created.");
             } else {

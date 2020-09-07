@@ -23,6 +23,7 @@ Configuration guide: _https://medium.com/@gustavo.ponce.ch/spring-boot-spring-mv
 <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; - Username
 <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; - Password (Bcrypt)
 <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; - Active (consider to remove)
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; - SpendingLimit
 -	Roles
 <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; - RoleId (PRIMARY KEY)
 <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; - Role
