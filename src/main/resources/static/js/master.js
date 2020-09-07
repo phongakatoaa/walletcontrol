@@ -1,3 +1,3 @@
-$(document).ready(function () {
-    $('.dropdown').dropdown();
-});
+function initMaster() {
+    $('#profileDropdown').dropdown();
+}

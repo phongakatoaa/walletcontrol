@@ -4,10 +4,10 @@ import com.toaa.walletcontrol.model.wallet.Category;
 import com.toaa.walletcontrol.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
+import java.util.List;
 
 @Controller
 @RequestMapping(value = "/category")
@@ -18,12 +18,24 @@ public class CategoryController {
     @ResponseBody
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     public Category getCategory(@PathVariable long id) {
-        return categoryService.getById(id);
+        return categoryService.findById(id);
     }
 
     @ResponseBody
     @RequestMapping(method = RequestMethod.POST)
-    public long createCategory(Category category) {
-        return categoryService.create(category).getId();
+    public Category createCategory(@Valid @RequestBody Category category) {
+        return categoryService.create(category);
+    }
+
+    @ResponseBody
+    @RequestMapping(method = RequestMethod.PUT)
+    public Category updateCategory(@Valid @RequestBody Category category) {
+        return categoryService.update(category);
+    }
+
+    @ResponseBody
+    @RequestMapping(method = RequestMethod.GET)
+    public List<Category> getCategories() {
+        return categoryService.getAll();
     }
 }

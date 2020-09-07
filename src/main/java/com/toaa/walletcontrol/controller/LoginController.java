@@ -2,6 +2,7 @@ package com.toaa.walletcontrol.controller;
 
 import com.toaa.walletcontrol.model.login.User;
 import com.toaa.walletcontrol.model.view.Fragment;
+import com.toaa.walletcontrol.service.CategoryService;
 import com.toaa.walletcontrol.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -15,12 +16,13 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.validation.Valid;
 
 @Controller
-@RequestMapping(value = "/")
 public class LoginController {
     @Autowired
     private UserService userService;
+    @Autowired
+    private CategoryService categoryService;
 
-    @RequestMapping(value = {"/", "/login"}, method = RequestMethod.GET)
+    @RequestMapping(value = {"/login"}, method = RequestMethod.GET)
     public ModelAndView login() {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("login");
@@ -54,19 +56,13 @@ public class LoginController {
         return modelAndView;
     }
 
-    @RequestMapping(value = "/home", method = RequestMethod.GET)
-    public ModelAndView home() {
-        ModelAndView modelAndView = new ModelAndView();
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        User user = userService.findUserByUsername(auth.getName());
-        modelAndView.addObject("username", "Welcome " + user.getUsername() + "/" + user.getFirstName() + " " + user.getLastName() + " (" + user.getEmail() + ")");
-        modelAndView.setViewName("home");
-        return modelAndView;
-    }
-
-    @RequestMapping(value = "/calendar", method = RequestMethod.GET)
+    @RequestMapping(value = {"/", "/calendar"}, method = RequestMethod.GET)
     public ModelAndView calendar() {
         ModelAndView modelAndView = new ModelAndView("master");
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        User user = userService.findUserByUsername(auth.getName());
+        modelAndView.addObject("user", user);
+        modelAndView.addObject("categories", categoryService.getAllActive());
         modelAndView.addObject("fragment", new Fragment("calendar", "Calendar", "instance"));
         return modelAndView;
     }
@@ -74,7 +70,20 @@ public class LoginController {
     @RequestMapping(value = "/reporting", method = RequestMethod.GET)
     public ModelAndView reporting() {
         ModelAndView modelAndView = new ModelAndView("master");
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        User user = userService.findUserByUsername(auth.getName());
+        modelAndView.addObject("user", user);
         modelAndView.addObject("fragment", new Fragment("reporting", "Reporting", "instance"));
+        return modelAndView;
+    }
+
+    @RequestMapping(value = "/admin/settings", method = RequestMethod.GET)
+    public ModelAndView settings() {
+        ModelAndView modelAndView = new ModelAndView("master");
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        User user = userService.findUserByUsername(auth.getName());
+        modelAndView.addObject("user", user);
+        modelAndView.addObject("fragment", new Fragment("settings", "Settings", "instance"));
         return modelAndView;
     }
 }

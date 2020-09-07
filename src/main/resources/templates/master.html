@@ -12,7 +12,7 @@
 <body>
 <div class="ui large menu blue inverted attached">
     <div class="header item borderless">
-        <a class="middle aligned content" href="/master">
+        <a class="middle aligned content" href="/">
             <div class="header">
                 <i class="icon wallet"></i>
                 Wallet Control
@@ -20,11 +20,11 @@
         </a>
     </div>
     <div class="right menu">
-        <div class="ui dropdown borderless header item">
+        <div class="ui dropdown borderless header item" id="profileDropdown">
             <div class="ui avatar image">
                 <img th:src="@{/images/default_avatar.png}" alt="default-avatar">
             </div>
-            <div class="content">Default User</div>
+            <div class="content" th:text="${user.getUsername()}"></div>
             <i class="dropdown icon"></i>
             <div class="ui menu">
                 <a class="item" href="#">
@@ -49,7 +49,7 @@
             <i class="chart bar icon"></i>
             Report
         </a>
-        <a class="item">
+        <a class="item" href="/admin/settings">
             <i class="cog icon"></i>
             Settings
         </a>
@@ -63,7 +63,8 @@
         <div class="ui stackable grid">
             <div class="row">
                 <div class="column">
-                    <div class="ui huge header">Welcome Phong Ha Tuan</div>
+                    <div class="ui huge header"
+                         th:text="'Welcome ' + ${user.getFirstName()} + ' ' + ${user.getLastName()}"></div>
                     <div>You've spent a total of 1.500.000 vnđ (70% of your spending limit) this month</div>
                 </div>
             </div>

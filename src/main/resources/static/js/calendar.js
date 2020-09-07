@@ -9,6 +9,7 @@ class WalletCalendar {
         this.currentYear = today.getFullYear();
         this.currentMonth = today.getMonth();
         this.beginOfWeek = null;
+        $('#yearViewBody td').attr('onclick', 'calendar.onClickMonth(this)');
         this.mode = 'month';
         this.populateMonthView();
     }
@@ -20,11 +21,11 @@ class WalletCalendar {
         } else if (this.mode === 'week') {
             var endOfWeek = new Date(this.beginOfWeek);
             endOfWeek.setDate(endOfWeek.getDate() + 6);
-            title = `${this.beginOfWeek.getDate()}`.padStart(2, '0') + '/'
-                + `${this.beginOfWeek.getMonth() + 1}`.padStart(2, '0') + '/'
+            title = `${this.beginOfWeek.getMonth() + 1}`.padStart(2, '0') + '/'
+                + `${this.beginOfWeek.getDate()}`.padStart(2, '0') + '/'
                 + this.beginOfWeek.getFullYear() + ' - '
-                + `${endOfWeek.getDate()}`.padStart(2, '0') + '/'
                 + `${endOfWeek.getMonth() + 1}`.padStart(2, '0') + '/'
+                + `${endOfWeek.getDate()}`.padStart(2, '0') + '/'
                 + endOfWeek.getFullYear();
         } else if (this.mode === 'year') {
             title = this.currentYear;
@@ -50,7 +51,7 @@ class WalletCalendar {
         this.populateWeekView();
     }
 
-    showMonthView() {
+    showMonthView(month, year) {
         if (this.mode === 'month') return;
         $('#controls .item').removeClass('active');
         $('#btnMonthView').addClass('active');
@@ -63,7 +64,10 @@ class WalletCalendar {
             this.currentMonth = this.beginOfWeek.getMonth();
             this.currentYear = this.beginOfWeek.getFullYear();
         } else if (this.mode === 'year') {
-            if (today.getFullYear() === this.currentYear) {
+            if (month !== undefined && year !== undefined) {
+                this.currentMonth = month;
+                this.currentYear = year;
+            } else if (today.getFullYear() === this.currentYear) {
                 this.currentMonth = today.getMonth();
             } else {
                 this.currentMonth = 0;
@@ -145,16 +149,24 @@ class WalletCalendar {
                 } else {
                     if (date.getMonth() > this.currentMonth) {
                         cell.addClass('next-month');
-                    } else {
-
                     }
                     if (date.getDate() === today.getDate()
                         && date.getMonth() === today.getMonth()
                         && date.getFullYear() === today.getFullYear()) {
-                        cell.css('background-color', '#A0A0A0');
+                        cell.css('background-color', '#838383');
                     }
-                    cell.find('.date-display').text(`${date.getDate()}`.padStart(2, '0') + '/'
-                        + `${date.getMonth() + 1}`.padStart(2, '0'));
+                    const dataDate = `${date.getMonth() + 1}`.padStart(2, '0') + '/'
+                        + `${date.getDate()}`.padStart(2, '0') + '/'
+                        + date.getFullYear();
+                    cell.attr('data-date', dataDate);
+                    cell.find('.date-display').text(`${date.getMonth() + 1}`.padStart(2, '0') + '/'
+                        + `${date.getDate()}`.padStart(2, '0'));
+                    cell.attr('onclick', 'calendar.onClickAddPayment(this)');
+                    cell.find('.btn-show-all').click(function (e) {
+                        e.stopPropagation();
+                        calendar.showAllPayments(dataDate);
+                    });
+                    this.demoDetail(cell);
                     date.setDate(date.getDate() + 1);
                 }
                 row.append(cell);
@@ -174,12 +186,25 @@ class WalletCalendar {
         var headers = $('#weekViewHead .week-date');
         for (var i = 0; i <= 6; i++) {
             var cell = $($('script#template-week-view-day-cell').text());
-            $(headers[i]).text(`${tmp.getDate()}`.padStart(2, '0') + '/'
-                + `${tmp.getMonth() + 1}`.padStart(2, '0'));
+            const dataDate = `${tmp.getMonth() + 1}`.padStart(2, '0') + '/'
+                + `${tmp.getDate()}`.padStart(2, '0') + '/'
+                + tmp.getFullYear();
+            $(headers[i]).text(`${tmp.getMonth() + 1}`.padStart(2, '0') + '/'
+                + `${tmp.getDate()}`.padStart(2, '0'));
+            cell.attr('data-date', dataDate);
+            cell.attr('onclick', 'calendar.onClickAddPayment(this)');
+            cell.find('.btn-show-all').click(function (e) {
+                e.stopPropagation();
+                calendar.showAllPayments(dataDate);
+            });
+
+            cell.find('.no-payment').css('display', 'block');
+            cell.find('.list').hide();
+
             if (tmp.getDate() === today.getDate()
                 && tmp.getMonth() === today.getMonth()
                 && tmp.getFullYear() === today.getFullYear()) {
-                cell.css('background-color', '#A0A0A0');
+                cell.css('background-color', '#838383');
             }
             row.append(cell);
             tmp.setDate(tmp.getDate() + 1);
@@ -188,6 +213,61 @@ class WalletCalendar {
 
     populateYearView() {
         this.updateTitle();
+        $('#yearViewBody td').attr('data-year', this.currentYear).find('.month-total').hide();
+        $('#yearViewBody td').find('.no-payment').show();
+    }
+
+    onClickAddPayment(el) {
+        var $el = $(el);
+        $('#paymentForm').form('set values', {
+            date: $el.attr('data-date')
+        });
+        $('#paymentModal').modal('show');
+    }
+
+    onClickMonth(el) {
+        var $el = $(el);
+        var month = $el.attr('data-month');
+        var year = $el.attr('data-year');
+        calendar.showMonthView(month, year);
+    }
+
+    showAllPayments(date) {
+        alert(`Showing ${date} details...`);
+    }
+
+    demoDetail(el) {
+        const products = [
+            {
+                name: 'Lavie',
+                cost: '10000',
+                colorCode: '#0288D1',
+            },
+            {
+                name: 'Spotify',
+                cost: '50000',
+                colorCode: '#388E3C'
+            },
+            {
+                name: 'Iphone SE',
+                cost: '11000000',
+                colorCode: '#D32F2F'
+            }];
+
+        var btnShowAll = el.find('.btn-show-all');
+        var currencyFormatter = new Intl.NumberFormat('vi-VN', {
+            style: 'currency',
+            currency: 'VND'
+        });
+        products.forEach(function (p) {
+            var $payment = $($('script#template-day-cell-payments').text());
+            var currency = currencyFormatter.format(p.cost);
+            $payment.find('.payment-name').text(p.name);
+            $payment.find('.payment-cost').text(currency);
+            $payment.find('.circle').css('color', p.colorCode);
+            btnShowAll.before($payment);
+        });
+        btnShowAll.show();
     }
 }
 
@@ -198,3 +278,20 @@ function getMonday(d) {
 }
 
 const calendar = new WalletCalendar();
+
+$(document).ready(function () {
+    initMaster();
+    $('#paymentModal').modal({
+        onShow: function () {
+            $('#standard_calendar').calendar({
+                type: 'date',
+            });
+        }
+    });
+    $('#paymentForm').form({
+        onSuccess: function (evt, data) {
+
+        },
+        fields: {}
+    });
+});

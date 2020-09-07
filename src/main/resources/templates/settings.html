@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div th:fragment="instance">
+    <table class="ui inverted celled table" id="categoryTable">
+        <thead>
+        <tr>
+            <th colspan="5">
+                <button class="ui green button" id="btnAdd" onclick="newCategory()">Add</button>
+            </th>
+        </tr>
+        <tr>
+            <th class="one wide center aligned">#</th>
+            <th class="seven wide">Category</th>
+            <th class="two wide center aligned">Color</th>
+            <th class="two wide center aligned">Active</th>
+            <th class="four wide"></th>
+        </tr>
+        </thead>
+        <tbody>
+        </tbody>
+        <tfoot>
+        <tr>
+            <td colspan="5" id="total" style="font-weight: bold; font-size: 16px;"></td>
+        </tr>
+        </tfoot>
+    </table>
+    <script type="text/plain" id="template-category">
+        <tr>
+            <td class="index center aligned"></td>
+            <td class="name">
+                <div class="ui fluid input">
+                    <input type="text" placeholder="Food..." disabled>
+                </div>
+            </td>
+            <td class="color-code center aligned">
+                <div class="circle" onclick="onClickColorCircle(this)"></div>
+                <input type="color" hidden="" onchange="onChangeColorPicker(this)" disabled>
+            </td>
+            <td class="is-active center aligned">
+                <div class="ui checkbox">
+                    <input type="checkbox" disabled>
+                    <label></label>
+                </div>
+            </td>
+            <td class="center aligned">
+                <button class="ui button btn-edit">Edit</button>
+                <button class="ui button btn-save" disabled>Save</button>
+                <button class="ui button btn-cancel" disabled>Cancel</button>
+            </td>
+        <tr>
+    </script>
+    <script type="text/javascript">
+        var categories;
+
+        $(document).ready(function () {
+            initMaster();
+            getCategories();
+        });
+
+        function getCategories() {
+            $.ajax({
+                url: '/category',
+                method: 'GET',
+                success: function (data) {
+                    categories = data;
+                    populateCategories();
+                },
+                error: function (res) {
+                    alert('unable to get categories ' + res);
+                }
+            });
+        }
+
+        function populateCategories() {
+            var tableBody = $('#categoryTable tbody').empty();
+            categories.forEach(function (c) {
+                var $row = createRowCategory(c);
+                tableBody.append($row);
+            });
+            $('#total').text("Total: " + categories.length);
+        }
+
+        function createRowCategory(c) {
+            var $row = $($('script#template-category').text());
+            $row.attr('data-id', c.id);
+            $row.find('.index').text(c.id);
+            $row.find('.name input').val(c.name);
+            $row.find('.circle').attr('data-id', c.id).css('background-color', c.color);
+            $row.find('.color-code input').val(c.color).attr('data-id', c.id);
+            $row.find('.is-active input').prop('checked', c.active);
+            $row.find('.btn-edit').attr('onclick', `onClickEdit(${c.id})`);
+            $row.find('.btn-save').attr('onclick', `onClickSave(${c.id})`);
+            $row.find('.btn-cancel').attr('onclick', `onClickCancel(${c.id})`);
+            return $row;
+        }
+
+        function onClickColorCircle(el) {
+            var id = $(el).attr('data-id');
+            $(`input[data-id="${id}"]`).click();
+        }
+
+        function onChangeColorPicker(el) {
+            var id = $(el).attr('data-id');
+            $(`.circle[data-id="${id}"]`).css('background-color', $(el).val());
+        }
+
+        function onClickEdit(id) {
+            var $row = $(`tr[data-id="${id}"]`);
+            $row.find('.btn-edit').prop('disabled', true);
+            $row.find('.btn-save').prop('disabled', false);
+            $row.find('.btn-cancel').prop('disabled', false);
+            $row.find('input').prop('disabled', false);
+        }
+
+        function onClickSave(id) {
+            var $row = $(`tr[data-id="${id}"]`);
+            var name = $row.find('.name input').val();
+            var color = $row.find('.color-code input').val();
+            var active = $row.find('.is-active input').prop('checked');
+            console.log(active);
+            if (name === '' || color === '') {
+                alert('Missing required fields');
+                return;
+            }
+            $.ajax({
+                url: '/category',
+                method: (id === 0) ? 'POST' : 'PUT',
+                dataType: 'json',
+                contentType: 'application/json;charset=utf-8',
+                data: JSON.stringify({
+                    'id': id,
+                    'name': name,
+                    'color': color,
+                    'active': active
+                }),
+                success: function (data) {
+                    getCategories();
+                }
+            });
+            if (id === 0) {
+                $('#btnAdd').prop('disabled', false);
+            }
+        }
+
+        function onClickCancel(id) {
+            var $row = $(`tr[data-id="${id}"]`);
+            $row.find('.btn-edit').prop('disabled', false);
+            $row.find('.btn-save').prop('disabled', true);
+            $row.find('.btn-cancel').prop('disabled', true);
+            $row.find('input').prop('disabled', true);
+            if (id === 0) {
+                $('#btnAdd').prop('disabled', false);
+                $row.remove();
+            }
+        }
+
+        function newCategory() {
+            var $row = createRowCategory({
+                id: 0,
+                name: '',
+                color: '#FFFFFF',
+                active: true
+            });
+            $('#btnAdd').prop('disabled', true);
+            $row.find('.btn-edit').prop('disabled', true);
+            $row.find('.btn-save').prop('disabled', false);
+            $row.find('.btn-cancel').prop('disabled', false);
+            $row.find('input').prop('disabled', false);
+            $('#categoryTable tbody').append($row);
+        }
+    </script>
+    <style>
+        .circle {
+            width: 40px;
+            height: 40px;
+            border-radius: 20px;
+            margin: auto;
+        }
+    </style>
+</div>
+</body>
+</html>

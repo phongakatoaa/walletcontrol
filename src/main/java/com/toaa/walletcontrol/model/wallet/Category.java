@@ -1,7 +1,5 @@
 package com.toaa.walletcontrol.model.wallet;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.toaa.walletcontrol.model.login.User;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -9,7 +7,6 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
-import java.util.Set;
 
 @Data
 @Builder
@@ -30,4 +27,7 @@ public class Category {
 
     @Column(name = "color_code")
     private String color;
+
+    @Column(name = "active")
+    private Boolean active;
 }

@@ -7,6 +7,10 @@
     vertical-align: top;
 }
 
+.day-cell:hover {
+    background-color: #A0A0A0;
+}
+
 .month-cell {
     width: 25%;
 }
@@ -28,4 +32,16 @@
 
 .exceeded {
     color: red;
+}
+
+td:hover {
+    cursor: pointer;
+    background-color: #2185d0;
+}
+
+.no-payment {
+    display: none;
+    text-align: center;
+    font-size: 16px;
+    padding: 20px 0;
 }
