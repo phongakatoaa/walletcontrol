@@ -30,9 +30,4 @@ public class Category {
 
     @Column(name = "color_code")
     private String color;
-
-    @JsonBackReference
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "user_id", nullable = false)
-    private User user;
 }

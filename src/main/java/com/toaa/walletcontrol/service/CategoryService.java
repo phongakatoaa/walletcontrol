@@ -19,7 +19,7 @@ public class CategoryService {
     public Category create(Category category) {
         Category newCategory = new Category();
         newCategory.setName(category.getName());
-        newCategory.setUser(secureUserService.getCurrentUser());
+//        newCategory.setUser(secureUserService.getCurrentUser());
         newCategory.setColor(category.getColor());
         return categoryRepository.save(newCategory);
     }

@@ -36,4 +36,10 @@ public class PaymentController {
         System.out.println(endDate);
         return paymentService.getByTimeRange(startDate, endDate);
     }
+
+    @ResponseBody
+    @RequestMapping(value = "/month/{month}", method = RequestMethod.GET)
+    public List<Payment> getByMonth(@PathVariable int month) {
+        return null;
+    }
 }
