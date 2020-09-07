@@ -1,6 +1,7 @@
 package com.toaa.walletcontrol.controller;
 
 import com.toaa.walletcontrol.model.login.User;
+import com.toaa.walletcontrol.model.view.Fragment;
 import com.toaa.walletcontrol.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -60,6 +61,20 @@ public class LoginController {
         User user = userService.findUserByUsername(auth.getName());
         modelAndView.addObject("username", "Welcome " + user.getUsername() + "/" + user.getFirstName() + " " + user.getLastName() + " (" + user.getEmail() + ")");
         modelAndView.setViewName("home");
+        return modelAndView;
+    }
+
+    @RequestMapping(value = "/calendar", method = RequestMethod.GET)
+    public ModelAndView calendar() {
+        ModelAndView modelAndView = new ModelAndView("master");
+        modelAndView.addObject("fragment", new Fragment("calendar", "Calendar", "instance"));
+        return modelAndView;
+    }
+
+    @RequestMapping(value = "/reporting", method = RequestMethod.GET)
+    public ModelAndView reporting() {
+        ModelAndView modelAndView = new ModelAndView("master");
+        modelAndView.addObject("fragment", new Fragment("reporting", "Reporting", "instance"));
         return modelAndView;
     }
 }

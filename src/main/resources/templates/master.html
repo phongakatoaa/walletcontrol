@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="${fragment.getTitle()}"></title>
+    <link rel="stylesheet" th:href="@{/webjars/fomantic-ui/dist/semantic.min.css}">
+    <link rel="stylesheet" th:href="@{/css/master.css}">
+    <script type="text/javascript" th:src="@{/webjars/jquery/3.5.1/dist/jquery.min.js}"></script>
+    <script type="text/javascript" th:src="@{/webjars/fomantic-ui/dist/semantic.min.js}"></script>
+    <script type="text/javascript" th:src="@{/js/master.js}"></script>
+</head>
+<body>
+<div class="ui large menu blue inverted attached">
+    <div class="header item borderless">
+        <a class="middle aligned content" href="/master">
+            <div class="header">
+                <i class="icon wallet"></i>
+                Wallet Control
+            </div>
+        </a>
+    </div>
+    <div class="right menu">
+        <div class="ui dropdown borderless header item">
+            <div class="ui avatar image">
+                <img th:src="@{/images/default_avatar.png}" alt="default-avatar">
+            </div>
+            <div class="content">Default User</div>
+            <i class="dropdown icon"></i>
+            <div class="ui menu">
+                <a class="item" href="#">
+                    <i class="icon user"></i>
+                    <div class="description">Profile</div>
+                </a>
+                <a class="item" href="/logout">
+                    <i class="icon sign out alternate"></i>
+                    <div class="description">Logout</div>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="my-center">
+    <div class="ui labeled icon inverted large menu vertical attached my-sidebar">
+        <a class="item" href="/calendar">
+            <i class="calendar icon"></i>
+            Calendar
+        </a>
+        <a class="item" href="/reporting">
+            <i class="chart bar icon"></i>
+            Report
+        </a>
+        <a class="item">
+            <i class="cog icon"></i>
+            Settings
+        </a>
+        <a class="disabled item" style="flex: 1"></a>
+        <a class="item">
+            <i class="envelope icon"></i>
+            Contact Support
+        </a>
+    </div>
+    <div style="flex: 1; padding: 1em">
+        <div class="ui stackable grid">
+            <div class="row">
+                <div class="column">
+                    <div class="ui huge header">Welcome Phong Ha Tuan</div>
+                    <div>You've spent a total of 1.500.000 vnđ (70% of your spending limit) this month</div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="column" th:insert="${fragment.getViewName()}::${fragment.getFragment()}"></div>
+            </div>
+        </div>
+    </div>
+</div>
+<div>
+    <div class="ui inverted black attached mini menu bottom borderless">
+        <div class="header item right">@Copyright F 2020</div>
+    </div>
+</div>
+</body>
+</html>

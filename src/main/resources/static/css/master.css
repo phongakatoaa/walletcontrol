@@ -1,0 +1,20 @@
+body {
+    display: flex;
+    flex-flow: column;
+}
+
+.my-center {
+    display: flex;
+    flex-flow: row;
+    flex: 1;
+}
+
+.main-fragment {
+    flex: 1;
+}
+
+.my-sidebar {
+    height: 100%;
+    display: flex !important;
+    flex-flow: column;
+}

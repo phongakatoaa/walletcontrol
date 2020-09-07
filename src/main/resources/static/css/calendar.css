@@ -1,0 +1,31 @@
+.month-view-day-column {
+    width: 14%;
+    text-align: center !important;
+}
+
+.day-cell {
+    vertical-align: top;
+}
+
+.month-cell {
+    width: 25%;
+}
+
+.date-display {
+    font-size: 16px;
+    color: white;
+}
+
+.previous-month, .next-month {
+    opacity: 0.3;
+}
+
+.month-total {
+    font-size: 40px;
+    padding: 40px 0;
+    text-align: center;
+}
+
+.exceeded {
+    color: red;
+}

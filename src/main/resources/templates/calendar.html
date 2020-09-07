@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Calendar</title>
+</head>
+<body>
+<div th:fragment="instance" class="ui stackable grid">
+    <link rel="stylesheet" th:href="@{/css/calendar.css}">
+    <div class="row">
+        <div class="column">
+            <table class="ui celled black inverted table" id="calendar">
+                <thead>
+                <tr id="controls">
+                    <th colspan="7">
+                        <div class="ui grey inverted menu">
+                            <a class="header borderless item">
+                                <div class="middle aligned content" id="title" data-month="" data-year="">September
+                                    2020
+                                </div>
+                            </a>
+                            <div class="right menu">
+                                <a class="icon item" id="btnPrev" onclick="calendar.prev()">
+                                    <i class="left chevron icon"></i>
+                                </a>
+                                <a class="icon item" id="btnNext" onclick="calendar.next()">
+                                    <i class="right chevron icon"></i>
+                                </a>
+                                <a class="item" id="btnYearView" onclick="calendar.showYearView()">year</a>
+                                <a class="active item" id="btnMonthView" onclick="calendar.showMonthView()">month</a>
+                                <a class="item" id="btnWeekView" onclick="calendar.showWeekView()">week</a>
+                            </div>
+                        </div>
+                    </th>
+                </tr>
+                <tr id="monthViewHead">
+                    <th class="month-view-day-column">Monday</th>
+                    <th class="month-view-day-column">Tuesday</th>
+                    <th class="month-view-day-column">Wednesday</th>
+                    <th class="month-view-day-column">Thursday</th>
+                    <th class="month-view-day-column">Friday</th>
+                    <th class="month-view-day-column">Saturday</th>
+                    <th class="month-view-day-column">Sunday</th>
+                </tr>
+                <tr id="weekViewHead" style="display: none">
+                    <th class="month-view-day-column">Monday <span class="week-date">07/09</span></th>
+                    <th class="month-view-day-column">Tuesday <span class="week-date">08/09</span></th>
+                    <th class="month-view-day-column">Wednesday <span class="week-date">09/09</span></th>
+                    <th class="month-view-day-column">Thursday <span class="week-date">10/09</span></th>
+                    <th class="month-view-day-column">Friday <span class="week-date">11/09</span></th>
+                    <th class="month-view-day-column">Saturday <span class="week-date">12/09</span></th>
+                    <th class="month-view-day-column">Sunday <span class="week-date">13/09</span></th>
+                </tr>
+                </thead>
+                <tbody id="weekViewBody">
+                </tbody>
+                <tbody id="monthViewBody">
+                </tbody>
+                <tbody id="yearViewBody" style="display: none">
+                <tr>
+                    <td class="month-cell">
+                        <div class="date-display">Jan</div>
+                        <div class="month-total"></div>
+                    </td>
+                    <td class="month-cell">
+                        <div class="date-display">Feb</div>
+                        <div class="month-total"></div>
+                    </td>
+                    <td class="month-cell">
+                        <div class="date-display">Mar</div>
+                        <div class="month-total"></div>
+                    </td>
+                    <td class="month-cell">
+                        <div class="date-display">Apr</div>
+                        <div class="month-total"></div>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="month-cell">
+                        <div class="date-display">May</div>
+                        <div class="month-total"></div>
+                    </td>
+                    <td class="month-cell">
+                        <div class="date-display">Jun</div>
+                        <div class="month-total"></div>
+                    </td>
+                    <td class="month-cell">
+                        <div class="date-display">Jul</div>
+                        <div class="month-total"></div>
+                    </td>
+                    <td class="month-cell">
+                        <div class="date-display">Aug</div>
+                        <div class="month-total"></div>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="month-cell">
+                        <div class="date-display">Sep</div>
+                        <div class="month-total"></div>
+                    </td>
+                    <td class="month-cell">
+                        <div class="date-display">Oct</div>
+                        <div class="month-total"></div>
+                    </td>
+                    <td class="month-cell">
+                        <div class="date-display">Nov</div>
+                        <div class="month-total"></div>
+                    </td>
+                    <td class="month-cell">
+                        <div class="date-display">Dec</div>
+                        <div class="month-total"></div>
+                    </td>
+                </tr>
+                </tbody>
+                <tfoot>
+                <tr>
+                    <td colspan="7" style="text-align: right; font-weight: bold; font-size: 20px">
+                        <div class="ui white text">Total: 15.000vnđ <span class="ui red text">(102%)</span></div>
+                    </td>
+                </tr>
+                </tfoot>
+            </table>
+        </div>
+    </div>
+    <script id="template-month-view-day-cell" type="text/plain">
+        <td class="day-cell">
+            <div class="date-display"></div>
+            <div class="ui inverted list">
+                <a class="item day-details">Show All...</a>
+            </div>
+        </td>
+    </script>
+    <script id="template-day-cell-payments" type="text/plain">
+        <div class="item">
+            <i class="circle icon"></i>
+            <div class="content">
+                <div class="header"></div>
+            </div>
+        </div>
+    </script>
+    <script id="template-week-view-day-cell" type="text/plain">
+        <td class="day-cell">
+            <div class="ui inverted list">
+                <a class="item day-details">Show All...</a>
+            </div>
+        </td>
+    </script>
+    <script th:src="@{/js/calendar.js}" type="text/javascript"></script>
+</div>
+</body>
+</html>
