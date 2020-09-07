@@ -38,6 +38,6 @@ public class Payment {
     @Column(name = "date")
     private LocalDate date;
 
-    @Column(name = "price")
+    @Column(name = "cost")
     private Long cost;
 }

@@ -26,8 +26,8 @@ public class Subscription {
     @NotNull(message = "*Please provide subscription due date")
     private LocalDate dueDate;
 
-    @Column(name = "price")
-    private Long price;
+    @Column(name = "cost")
+    private Long cost;
 
     @Column(name = "active")
     private Boolean active;
