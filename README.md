@@ -17,14 +17,14 @@ Configuration guide: _https://medium.com/@gustavo.ponce.ch/spring-boot-spring-mv
 
 ### Table schemas:
 -	Users
-<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; - (PRIMARY KEY) UserId
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; - UserId (PRIMARY KEY)
 <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; - FirstName
 <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; - LastName
 <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; - Username
 <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; - Password (Bcrypt)
 <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; - Active (consider to remove)
 -	Roles
-<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; - (PRIMARY KEY) RoleId
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; - RoleId (PRIMARY KEY)
 <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; - Role
 -	User_role 
 <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; - UserId (FOREIGN KEY)
@@ -45,6 +45,7 @@ Configuration guide: _https://medium.com/@gustavo.ponce.ch/spring-boot-spring-mv
 <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; - UserId (FOREIGN KEY)
 <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; - Category
 -	MonthlySubscriptions
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; - SubscriptionId (PRIMARY KEY)
 <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; - ProductId (FOREIGN KEY)
 <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; - DueDate
 <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; - Price
