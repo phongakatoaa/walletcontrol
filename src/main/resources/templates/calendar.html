@@ -140,6 +140,7 @@
         </div>
         <div class="content">
             <div class="ui form" id="paymentForm">
+                <input name="userId" th:value="${user.getId()}" hidden>
                 <div class="required field">
                     <label>Product/Service</label>
                     <input type="text" name="product" placeholder="Enter your product/service...">
@@ -170,13 +171,13 @@
                 <div class="required field">
                     <label>Cost</label>
                     <div class="ui right labeled input">
-                        <input type="number" name="price" placeholder="0" step="any">
+                        <input type="number" name="cost" placeholder="0" step="any">
                         <div class="ui label">vnd</div>
                     </div>
                 </div>
                 <div class="field">
                     <label>Comment</label>
-                    <textarea name="comment" type="text"
+                    <textarea name="detail" type="text"
                               placeholder="Additional detail about this payment..."></textarea>
                 </div>
                 <div class="ui error message"></div>
@@ -227,6 +228,7 @@
 
 
     </script>
+    <script th:src="@{/webjars/momentjs/2.24.0/min/moment.min.js}"></script>
     <script th:src="@{/js/calendar.js}" type="text/javascript"></script>
 </div>
 </body>

@@ -1,14 +1,14 @@
 package com.toaa.walletcontrol.controller;
 
+import com.toaa.walletcontrol.model.dto.DTOPayment;
 import com.toaa.walletcontrol.model.wallet.Payment;
 import com.toaa.walletcontrol.service.PaymentService;
+import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @Controller
@@ -16,10 +16,12 @@ import java.util.List;
 public class PaymentController {
     @Autowired
     private PaymentService paymentService;
+    @Autowired
+    private Logger logger;
 
     @ResponseBody
     @RequestMapping(method = RequestMethod.POST)
-    public Payment createPayment(Payment payment) {
+    public Payment createPayment(@Valid @RequestBody DTOPayment payment) {
         return paymentService.create(payment);
     }
 

@@ -290,8 +290,70 @@ $(document).ready(function () {
     });
     $('#paymentForm').form({
         onSuccess: function (evt, data) {
-
+            console.log(moment(data.date).format('MM-DD-YYYY'));
+            $.ajax({
+                url: '/payment',
+                method: 'POST',
+                dataType: 'json',
+                contentType: 'application/json',
+                data: JSON.stringify({
+                    id: 0,
+                    product: data.product,
+                    date: moment(data.date).format('YYYY-MM-DD'),
+                    cost: Number(data.cost),
+                    categoryId: parseInt(data.categoryId),
+                    detail: data.detail,
+                    userId: parseInt(data.userId)
+                }),
+                success: function (data) {
+                    alert('success');
+                },
+                error: function () {
+                    alert('error');
+                }
+            });
         },
-        fields: {}
+        fields: {
+            product: {
+                identifier: 'product',
+                rules: [
+                    {
+                        type: 'empty',
+                        prompt: 'Please enter payment product'
+                    }
+                ]
+            },
+            categoryId: {
+                identifier: 'categoryId',
+                rules: [
+                    {
+                        type: 'empty',
+                        prompt: 'Please select category'
+                    }
+                ]
+            },
+            date: {
+                identifier: 'date',
+                rules: [
+                    {
+                        type: 'empty',
+                        prompt: 'Please enter payment date'
+                    }
+                ]
+            },
+            cost: {
+                identifier: 'cost',
+                rules: [
+                    {
+                        type: 'empty',
+                        prompt: 'Please enter payment cost'
+                    },
+                    {
+                        type: 'number',
+                        prompt: 'Cost must be a number'
+                    },
+                ]
+            }
+        }
     });
 });

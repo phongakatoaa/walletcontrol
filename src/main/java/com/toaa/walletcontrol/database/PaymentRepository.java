@@ -14,6 +14,6 @@ public interface PaymentRepository extends JpaRepository<Payment, Long> {
 
     List<Payment> findAllByDateBetween(LocalDate startDate, LocalDate endDate);
 
-    @Query(value = "SELECT SUM(p.cost) FROM Payment p WHERE p.date BETWEEN ?1 AND ?2")
+    @Query(value = "select sum(cost) from Payment where date between ?1 and ?2")
     long getSum(String startDate, String endDate);
 }

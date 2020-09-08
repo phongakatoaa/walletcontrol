@@ -1,5 +1,6 @@
 package com.toaa.walletcontrol.model.wallet;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -7,6 +8,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
+import java.util.Set;
 
 @Data
 @Builder
@@ -30,4 +32,8 @@ public class Category {
 
     @Column(name = "active")
     private Boolean active;
+
+    @JsonManagedReference
+    @OneToMany(mappedBy = "category", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private Set<Payment> payments;
 }

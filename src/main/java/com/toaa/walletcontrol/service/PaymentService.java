@@ -1,7 +1,13 @@
 package com.toaa.walletcontrol.service;
 
+import com.toaa.walletcontrol.database.CategoryRepository;
 import com.toaa.walletcontrol.database.PaymentRepository;
+import com.toaa.walletcontrol.database.UserRepository;
+import com.toaa.walletcontrol.model.dto.DTOPayment;
+import com.toaa.walletcontrol.model.login.User;
+import com.toaa.walletcontrol.model.wallet.Category;
 import com.toaa.walletcontrol.model.wallet.Payment;
+import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,19 +20,30 @@ public class PaymentService {
     @Autowired
     private PaymentRepository paymentRepository;
     @Autowired
-    private SecureUserService secureUserService;
+    private CategoryRepository categoryRepository;
+    @Autowired
+    private UserRepository userRepository;
+    @Autowired
+    private Logger logger;
 
-    public Payment getById(long id){
+    public Payment getById(long id) {
         return paymentRepository.findById(id);
     }
 
-    public Payment create(Payment payment) {
+    public Payment create(DTOPayment payment) {
+        Category category = categoryRepository.findById(payment.getCategoryId());
+        logger.info("Category: " + category);
+        User user = userRepository.findById(payment.getUserId());
+        logger.info("User: " + user);
         Payment newPayment = new Payment();
-        newPayment.setUser(secureUserService.getCurrentUser());
-        newPayment.setDate(LocalDate.now());
+        LocalDate date = LocalDate.parse(payment.getDate());
+        logger.info("Date: " + date);
+        newPayment.setUser(user);
+        newPayment.setDate(date);
         newPayment.setDetail(payment.getDetail());
         newPayment.setCost(payment.getCost());
         newPayment.setProduct(payment.getProduct());
+        newPayment.setCategory(category);
         return paymentRepository.save(newPayment);
     }
 
@@ -38,7 +55,6 @@ public class PaymentService {
     }
 
     public long getByYear(int year) {
-
-        return paymentRepository.getSum();
+        return paymentRepository.getSum("", "");
     }
 }

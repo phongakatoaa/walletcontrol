@@ -32,6 +32,11 @@ public class Payment {
     @NotEmpty(message = "*Please provide a product name")
     private String product;
 
+    @JsonBackReference
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "category_id", nullable = false)
+    private Category category;
+
     @Column(name = "payment_detail")
     private String detail;
 
