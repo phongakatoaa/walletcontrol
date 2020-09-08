@@ -2,16 +2,14 @@ package com.toaa.walletcontrol.model.wallet;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.toaa.walletcontrol.model.login.User;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import java.time.LocalDate;
 
-@Data
+@Setter
+@Getter
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
@@ -23,8 +21,7 @@ public class Payment {
     @Column(name = "payment_id")
     private long id;
 
-    @JsonBackReference
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
@@ -32,8 +29,7 @@ public class Payment {
     @NotEmpty(message = "*Please provide a product name")
     private String product;
 
-    @JsonBackReference
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name = "category_id", nullable = false)
     private Category category;
 

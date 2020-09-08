@@ -32,8 +32,4 @@ public class Category {
 
     @Column(name = "active")
     private Boolean active;
-
-    @JsonManagedReference
-    @OneToMany(mappedBy = "category", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private Set<Payment> payments;
 }

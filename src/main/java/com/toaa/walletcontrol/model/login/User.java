@@ -1,14 +1,11 @@
 package com.toaa.walletcontrol.model.login;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
-import com.toaa.walletcontrol.model.wallet.Category;
 import com.toaa.walletcontrol.model.wallet.Payment;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.Fetch;
-import org.hibernate.annotations.FetchMode;
 import org.hibernate.validator.constraints.Length;
 
 import javax.persistence.*;
@@ -61,8 +58,4 @@ public class User {
     @ManyToMany(cascade = CascadeType.MERGE)
     @JoinTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Role> roles;
-
-    @JsonManagedReference
-    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private Set<Payment> payments;
 }

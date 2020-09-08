@@ -48,13 +48,20 @@ public class PaymentService {
     }
 
     public List<Payment> getByTimeRange(String startDate, String endDate) {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d/MM/yyyy");
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-d");
         LocalDate startDateTime = LocalDate.parse(startDate, formatter);
         LocalDate endDateTime = LocalDate.parse(endDate, formatter);
         return paymentRepository.findAllByDateBetween(startDateTime, endDateTime);
     }
 
-    public long getByYear(int year) {
-        return paymentRepository.getSum("", "");
+    public long[] getByYear(int year) {
+        long[] res = new long[12];
+        for (int month = 1; month <= 12; month++) {
+            LocalDate start = LocalDate.of(year, month, 1);
+            LocalDate end = start.withDayOfMonth(start.lengthOfMonth());
+            Long monthTotal = paymentRepository.getSum(start, end);
+            res[month - 1] = (monthTotal != null) ? monthTotal : 0;
+        }
+        return res;
     }
 }

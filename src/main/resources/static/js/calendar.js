@@ -135,6 +135,7 @@ class WalletCalendar {
         var date = new Date(this.currentYear, this.currentMonth, 1);
         var week = 1;
         var day = 1;
+        var startDate, endDate;
         while (week <= 5) {
             var row = $('<tr></tr>');
             monthViewBody.append(row);
@@ -146,6 +147,9 @@ class WalletCalendar {
                     newDate.setDate(newDate.getDate() - (date.getDay() - day));
                     cell.find('.date-display').text(`${newDate.getDate()}`.padStart(2, '0') + '/'
                         + `${newDate.getMonth() + 1}`.padStart(2, '0'));
+                    if(!startDate) {
+                        startDate = new Date(newDate);
+                    }
                 } else {
                     if (date.getMonth() > this.currentMonth) {
                         cell.addClass('next-month');
@@ -158,7 +162,7 @@ class WalletCalendar {
                     const dataDate = `${date.getMonth() + 1}`.padStart(2, '0') + '/'
                         + `${date.getDate()}`.padStart(2, '0') + '/'
                         + date.getFullYear();
-                    cell.attr('data-date', dataDate);
+                    cell.attr('data-date', moment(dataDate).format("YYYY-MM-DD"));
                     cell.find('.date-display').text(`${date.getMonth() + 1}`.padStart(2, '0') + '/'
                         + `${date.getDate()}`.padStart(2, '0'));
                     cell.attr('onclick', 'calendar.onClickAddPayment(this)');
@@ -166,15 +170,20 @@ class WalletCalendar {
                         e.stopPropagation();
                         calendar.showAllPayments(dataDate);
                     });
-                    this.demoDetail(cell);
+                    // this.demoDetail(cell);
                     date.setDate(date.getDate() + 1);
                 }
                 row.append(cell);
                 day++;
+                if(!startDate) {
+                    startDate = new Date(date);
+                }
             }
             day = 1;
             week++;
         }
+        endDate = new Date(date);
+        this.insertDailyData(startDate, endDate)
     }
 
     populateWeekView() {
@@ -191,7 +200,7 @@ class WalletCalendar {
                 + tmp.getFullYear();
             $(headers[i]).text(`${tmp.getMonth() + 1}`.padStart(2, '0') + '/'
                 + `${tmp.getDate()}`.padStart(2, '0'));
-            cell.attr('data-date', dataDate);
+            cell.attr('data-date', moment(dataDate).format('YYYY-MM-DD'));
             cell.attr('onclick', 'calendar.onClickAddPayment(this)');
             cell.find('.btn-show-all').click(function (e) {
                 e.stopPropagation();
@@ -199,7 +208,7 @@ class WalletCalendar {
             });
 
             cell.find('.no-payment').css('display', 'block');
-            cell.find('.list').hide();
+            // cell.find('.list').hide();
 
             if (tmp.getDate() === today.getDate()
                 && tmp.getMonth() === today.getMonth()
@@ -209,12 +218,16 @@ class WalletCalendar {
             row.append(cell);
             tmp.setDate(tmp.getDate() + 1);
         }
+        const startDate = this.beginOfWeek;
+        const endDate = tmp;
+        this.insertDailyData(startDate, endDate)
     }
 
     populateYearView() {
         this.updateTitle();
         $('#yearViewBody td').attr('data-year', this.currentYear).find('.month-total').hide();
         $('#yearViewBody td').find('.no-payment').show();
+        this.insertMonthlyData(this.currentYear)
     }
 
     onClickAddPayment(el) {
@@ -268,6 +281,53 @@ class WalletCalendar {
             btnShowAll.before($payment);
         });
         btnShowAll.show();
+    }
+
+    insertDailyData(startDate, endDate) {
+        var startDateStr = moment(startDate).format("YYYY-MM-DD");
+        var endDateStr = moment(endDate).format("YYYY-MM-DD");
+        $.ajax({
+            url: `/payment/${startDateStr}/${endDateStr}`,
+            method: 'get',
+            success: function (payments) {
+                var currencyFormatter = new Intl.NumberFormat('vi-VN', {
+                    style: 'currency',
+                    currency: 'VND'
+                });
+                payments.forEach(function (p) {
+                    var $payment = $($('script#template-day-cell-payments').text());
+                    const cell = $(`td[data-date="${p.date}"]`);
+                    var btnShowAll = cell.find('.btn-show-all');
+                    var currency = currencyFormatter.format(p.cost);
+                    $payment.find('.payment-name').text(p.product);
+                    $payment.find('.payment-cost').text(currency);
+                    $payment.find('.circle').css('color', p.category.color);
+                    btnShowAll.before($payment);
+                    cell.find('.no-payment').hide();
+                })
+            }
+        })
+    }
+
+    insertMonthlyData(year) {
+        $.ajax({
+            url: `/payment/year/${year}`,
+            method: 'get',
+            success: function (totals) {
+                var currencyFormatter = new Intl.NumberFormat('vi-VN', {
+                    style: 'currency',
+                    currency: 'VND'
+                });
+                for (let month = 0; month < 11; month++) {
+                    const cell = $(`td[data-month="${month}"]`);
+                    if(totals[month] !== 0) {
+                        cell.find('.month-total').show();
+                        cell.find('.month-total').text(currencyFormatter.format(totals[month]));
+                        cell.find('.no-payment').hide();
+                    }
+                }
+            }
+        })
     }
 }
 

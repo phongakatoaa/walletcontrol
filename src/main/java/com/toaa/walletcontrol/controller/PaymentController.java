@@ -32,14 +32,14 @@ public class PaymentController {
     }
 
     @ResponseBody
-    @RequestMapping(value = "/time-range", method = RequestMethod.GET)
-    public List<Payment> getByTimeRange(String startDate, String endDate) {
+    @RequestMapping(value = "/{startDate}/{endDate}", method = RequestMethod.GET)
+    public List<Payment> getByTimeRange(@PathVariable String startDate, @PathVariable String endDate) {
         return paymentService.getByTimeRange(startDate, endDate);
     }
 
     @ResponseBody
     @RequestMapping(value = "/year/{year}", method = RequestMethod.GET)
-    public long getByYear(@PathVariable int year) {
+    public long[] getByYear(@PathVariable int year) {
         return paymentService.getByYear(year);
     }
 }
